@@ -1,0 +1,82 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createBabelLoader = createBabelLoader;
+
+function _semver() {
+  const data = require("semver");
+
+  _semver = function () {
+    return data;
+  };
+
+  return data;
+}
+
+function createBabelLoader(configurator) {
+  // better to use require instead of just preset name to avoid babel resolving (in our test we set custom resolver - and only in case of explicit required it works)
+  const presets = [[require("@babel/preset-env").default, {
+    modules: false,
+    targets: computeBabelEnvTarget(configurator.isRenderer, configurator.electronVersion)
+  }]];
+  const plugins = [require("@babel/plugin-syntax-dynamic-import").default];
+
+  if (configurator.type !== "main" && configurator.hasDependency("element-ui")) {
+    plugins.push([require("babel-plugin-component"), {
+      libraryName: "element-ui",
+      styleLibraryName: "theme-chalk"
+    }]);
+  }
+
+  addBabelItem(presets, configurator.getMatchingDevDependencies({
+    includes: ["babel-preset-", "@babel/preset-"],
+    excludes: ["babel-preset-env", "@babel/preset-env"]
+  }));
+  addBabelItem(plugins, configurator.getMatchingDevDependencies({
+    includes: ["babel-plugin-", "@babel/plugin-"],
+    excludes: ["babel-plugin-syntax-dynamic-import", "@babel/plugin-syntax-dynamic-import"]
+  }));
+  return {
+    loader: "babel-loader",
+    options: {
+      presets,
+      plugins
+    }
+  };
+}
+
+function addBabelItem(to, names) {
+  for (const name of names) {
+    const module = require(name);
+
+    to.push([module.default || module]);
+  }
+}
+
+function computeBabelEnvTarget(isRenderer, electronVersion) {
+  if (isRenderer) {
+    return {
+      electron: electronVersion
+    };
+  }
+
+  let nodeVersion = "7.4.0";
+
+  if ((0, _semver().gte)(electronVersion, "3.0.0")) {
+    nodeVersion = "10.2.0";
+  } else if ((0, _semver().gte)(electronVersion, "2.0.0")) {
+    nodeVersion = "8.9.3";
+  } else if ((0, _semver().gte)(electronVersion, "1.8.2")) {
+    nodeVersion = "8.2.1";
+  } else if ((0, _semver().gte)(electronVersion, "1.7.3")) {
+    nodeVersion = "7.9.0";
+  }
+
+  return {
+    node: nodeVersion
+  };
+} 
+// __ts-babel@6.0.4
+//# sourceMappingURL=js.js.map
