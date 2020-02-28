@@ -3,6 +3,7 @@
   "private": true,
   "license": "MIT",
   "author": "Vladimir Krivosheev <develar@gmail.com>",
+  "version": "2.7.4-kx1",
   "main": "./packages/electron-webpack/out/main.js",
   "bin": {
     "electron-webpack": "./packages/electron-webpack/out/cli.js"
