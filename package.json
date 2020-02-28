@@ -9,6 +9,7 @@
     "electron-webpack": "./packages/electron-webpack/out/cli.js"
   },
   "scripts": {
+    "prepare": "cp -Rf packages/electron-webpack/* .",
     "compile": "cross-env ts-babel packages/electron-webpack test && yarn schema",
     "lint": "tslint -c ./node_modules/electron-builder-tslint-config/tslint.json -p packages/electron-webpack --exclude '**/*.js'",
     "release": "BABEL_ENV=production yarn compile && ./npm-publish.sh && conventional-changelog -p angular -i CHANGELOG.md -s",
