@@ -3,6 +3,10 @@
   "private": true,
   "license": "MIT",
   "author": "Vladimir Krivosheev <develar@gmail.com>",
+  "main": "./packages/electron-webpack/out/main.js",
+  "bin": {
+    "electron-webpack": "./packages/electron-webpack/out/cli.js"
+  },
   "scripts": {
     "compile": "cross-env ts-babel packages/electron-webpack test && yarn schema",
     "lint": "tslint -c ./node_modules/electron-builder-tslint-config/tslint.json -p packages/electron-webpack --exclude '**/*.js'",
@@ -13,6 +17,37 @@
     "schema": "ts-json-schema-generator --path 'packages/electron-webpack/src/**/*.ts' --no-top-ref --no-type-check --type ElectronWebpackConfiguration --expose export > packages/electron-webpack/scheme.json",
     "//": "update-deps task intended only for core maintainers",
     "update-deps": "npm-check-updates -u && lerna exec -- npm-check-updates -u"
+  },
+  "dependencies": {
+    "@types/webpack-env": "^1.13.9",
+    "async-exit-hook": "^2.0.1",
+    "bluebird": "^3.5.5",
+    "chalk": "^2.4.2",
+    "crocket": "^0.9.11",
+    "css-hot-loader": "^1.4.4",
+    "css-loader": "^3.0.0",
+    "debug": "^4.1.1",
+    "dotenv": "^8.0.0",
+    "dotenv-expand": "^5.1.0",
+    "electron-devtools-installer": "^2.2.4",
+    "electron-webpack-js": "~2.3.3",
+    "file-loader": "^4.0.0",
+    "fs-extra": "^8.1.0",
+    "html-loader": "^1.0.0-alpha.0",
+    "html-webpack-plugin": "^3.2.0",
+    "lazy-val": "^1.0.4",
+    "mini-css-extract-plugin": "^0.7.0",
+    "node-loader": "^0.6.0",
+    "read-config-file": "^4.0.1",
+    "semver": "^6.2.0",
+    "source-map-support": "^0.5.12",
+    "style-loader": "^0.23.1",
+    "terser-webpack-plugin": "^1.3.0",
+    "url-loader": "^2.0.1",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.7.2",
+    "webpack-merge": "^4.2.1",
+    "yargs": "^13.2.4"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.27",
